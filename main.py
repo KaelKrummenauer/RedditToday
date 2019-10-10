@@ -10,7 +10,7 @@ with open('credentials.json', 'r') as f:
 # create reddit wrapper api
 reddit = praw.Reddit(client_id=credentials['client_id'],
                      client_secret=credentials['client_secret'],
-                     user_agent='TodayILearned')
+                     user_agent='TodayOnReddit')
 
 # collect reddit posts
 data = [submission.title for submission in reddit.subreddit('all').hot(limit=10000)]
