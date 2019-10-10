@@ -1,14 +1,17 @@
 import praw
+import json
 import matplotlib.pyplot as plt
 
-reddit = praw.Reddit(client_id="your client id",
-                     client_secret="your client secret",
-                     user_agent="my user agent")
+# credentials
+with open('credentials.json', 'r') as f:
+    credentials = json.load(f)
 
-data=[]
+# create reddit wrapper api
+reddit = praw.Reddit(client_id=credentials['client_id'],
+                     client_secret=credentials['client_secret'],
+                     user_agent='TodayILearned')
 
-for submission in reddit.subreddit('all').hot(limit=10000):
-    data.append(submission.title)
+data = [submission.title for submission in reddit.subreddit('all').hot(limit=10)]
 
 
 blizzard = [s for s in data if "blizzard" in s]
