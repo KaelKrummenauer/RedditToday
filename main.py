@@ -1,3 +1,4 @@
+# load packages
 import praw
 import json
 import matplotlib.pyplot as plt
@@ -11,47 +12,21 @@ reddit = praw.Reddit(client_id=credentials['client_id'],
                      client_secret=credentials['client_secret'],
                      user_agent='TodayILearned')
 
-data = [submission.title for submission in reddit.subreddit('all').hot(limit=10)]
+# collect reddit posts
+data = [submission.title for submission in reddit.subreddit('all').hot(limit=10000)]
 
+# specify keywords
+keywords = ["Blizzard", "China", "Hong Kong", "Trump", "Riot Games", "Tencent", "Google", "Climate"]
 
-blizzard = [s for s in data if "blizzard" in s]
-Blizzard = [s for s in data if "Blizzard" in s]
-china = [s for s in data if 'china' in s]
-China = [s for s in data if "China" in s]
-hongKong = [s for s in data if "Hong Kong" in s]
-hongkong = [s for s in data if "hong kong" in s]
-Trump = [s for s in data if "Trump" in s]
-trump = [s for s in data if "trump" in s]
-riotGames = [s for s in data if 'riot games' in s]
-RiotGames = [s for s in data if 'Riot Games' in s]
-tencent = [s for s in data if 'tencent' in s]
-Tencent = [s for s in data if 'Tencent' in s]
-google = [s for s in data if 'google' in s]
-Google = [s for s in data if 'Google' in s]
-climate = [s for s in data if 'climate' in s]
-Climate = [s for s in data if 'Climate' in s]
+# count occurrences
+keyword_count = {}
+for keyword in keywords:
+    keyword_count[keyword] = len([s for s in data if keyword.lower() in s.lower()])
 
-
-climate = len(climate) + len(Climate)
-google = len(google) + len(Google)
-blizzard = len(blizzard) + len(Blizzard)
-china = len(china) + len(China)
-hongKong = len(hongKong) + len(hongkong)
-trump = len(trump) + len(Trump)
-riot = len(riotGames) + len(RiotGames)
-tencent = len(tencent) + len(Tencent)
-
-print(china, blizzard, hongKong, trump, riot, tencent, google, climate)
-
-left = [1, 2, 3, 4, 5, 6, 7, 8]
-
-height = [blizzard, china, hongKong, trump, riot, tencent, google, climate]
-
-tick_label = ['Blizzard', 'China', 'Hong Kong', "Trump", 'Riot Games', 'Tencent', 'Google', 'Climate']
-
-plt.bar(left, height, tick_label = tick_label,
-        width = 0.8, color = ['blue'])
-
+# plot figure and save
+plt.figure(figsize=(8, 6))
 plt.title('Number of occurrences in post titles of last 10000 All posts')
-
+plt.bar(keyword_count.keys(), keyword_count.values(), width = 0.8, color = ['blue'])
+plt.tight_layout()
+plt.savefig('example_img.jpg')
 plt.show()
