@@ -1,1 +1,7 @@
+flake8
+gensim
+matplotlib
+nltk
 praw
+sklearn
+spacy
