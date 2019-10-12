@@ -21,13 +21,13 @@ reddit = praw.Reddit(client_id=credentials['client_id'],
                      user_agent='TodayOnReddit')
 
 # collect reddit posts
-data = [submission.title for submission in reddit.subreddit('all').hot(limit=10000)]
+data = [submission.title for submission in reddit.subreddit('all').hot(limit=1000)]
 
 # create stopwords list
 stop_words = set(stopwords.words('english'))
 stop_words.update(["gonna", "gotta", "just", "like", "think", "one", "new", "first", "think", "got", "day", "get",
                    "made", "know", "found", "back", "make", "look", "still", "see", "picture", "big", "guy",
-                   ])
+                   "let", "away"])
 
 def preprocess(text, irrelevant_pos = ['ADV','PRON','CCONJ','PUNCT','PART','DET','ADP','SPACE']):
     """
@@ -69,7 +69,7 @@ top_20_words = get_topk_words(data, k=20, ngram_range=(1, 2))
 # plot figure and save
 plot_data = {key.title():val for key, val in top_20_words}
 plt.figure(figsize=(16, 6))
-plt.title('Number of occurrences in post titles of last 10000 All posts', fontsize=16, fontweight='bold')
+plt.title('Number of occurrences in post titles of last 1000 All posts', fontsize=16, fontweight='bold')
 plt.bar(plot_data.keys(), plot_data.values(), width = 0.8)
 plt.xticks(rotation=20, fontsize=12)
 plt.tight_layout()
