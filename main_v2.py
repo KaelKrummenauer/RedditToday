@@ -25,7 +25,9 @@ data = [submission.title for submission in reddit.subreddit('all').hot(limit=100
 
 # create stopwords list
 stop_words = set(stopwords.words('english'))
-stop_words.update(["gonna", "gotta", "just", "like"])
+stop_words.update(["gonna", "gotta", "just", "like", "think", "one", "new", "first", "think", "got", "day", "get",
+                   "made", "know", "found", "back", "make", "look", "still", "see", "picture", "big", "guy",
+                   ])
 
 def preprocess(text, irrelevant_pos = ['ADV','PRON','CCONJ','PUNCT','PART','DET','ADP','SPACE']):
     """
@@ -71,5 +73,5 @@ plt.title('Number of occurrences in post titles of last 10000 All posts', fontsi
 plt.bar(plot_data.keys(), plot_data.values(), width = 0.8)
 plt.xticks(rotation=20, fontsize=12)
 plt.tight_layout()
-plt.savefig('imgs/example_img_v2.jpg')
+#plt.savefig('imgs/example_img_v2.jpg')
 plt.show()
