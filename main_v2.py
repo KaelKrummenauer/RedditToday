@@ -25,9 +25,11 @@ data = [submission.title for submission in reddit.subreddit('all').hot(limit=100
 
 # create stopwords list
 stop_words = set(stopwords.words('english'))
-stop_words.update(["gonna", "gotta", "just", "like", "think", "one", "new", "first", "think", "got", "day", "get",
-                   "made", "know", "found", "back", "make", "look", "still", "see", "picture", "big", "guy",
-                   "let", "away"])
+
+with open('stopWords.txt', 'r') as f:
+    textFile = f.read().split(',')
+
+stop_words.update(textFile)
 
 def preprocess(text, irrelevant_pos = ['ADV','PRON','CCONJ','PUNCT','PART','DET','ADP','SPACE']):
     """
