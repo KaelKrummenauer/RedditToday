@@ -18,10 +18,10 @@ with open('credentials.json', 'r') as f:
 # create reddit wrapper api
 reddit = praw.Reddit(client_id=credentials['client_id'],
                      client_secret=credentials['client_secret'],
-                     user_agent='TodayOnReddit')
+                     user_agent='RedditToday')
 
 # collect reddit posts
-data = [submission.title for submission in reddit.subreddit('all').hot(limit=1000)]
+data = [submission.title for submission in reddit.subreddit('all').hot(limit=100)]
 
 # create stopwords list
 stop_words = set(stopwords.words('english'))
@@ -56,7 +56,7 @@ clean_data = [preprocess(text) for text in data]
 # function to get top k words
 def get_topk_words(text, k=10, ngram_range=(1,1)):
     """
-    Returns the top k most freuently occurring words or word sequences
+    Returns the top k most frequently occurring words or word sequences
     """
     cv = CountVectorizer(max_df=0.8, stop_words=stop_words, max_features=10000, ngram_range=ngram_range)
     bow = cv.fit_transform(text)
@@ -66,14 +66,14 @@ def get_topk_words(text, k=10, ngram_range=(1,1)):
     return sorted_freq[:k]
 
 # top 20 words/word sequences
-top_20_words = get_topk_words(data, k=20, ngram_range=(1, 2))
+top_20_words = get_topk_words(data, k=10, ngram_range=(1, 2))
 
 # plot figure and save
 plot_data = {key.title():val for key, val in top_20_words}
 plt.figure(figsize=(16, 6))
-plt.title('Number of occurrences in post titles of last 1000 All posts', fontsize=16, fontweight='bold')
+plt.title('Number of occurrences in post titles of last 1000 posts on hot', fontsize=16, fontweight='bold')
 plt.bar(plot_data.keys(), plot_data.values(), width = 0.8)
 plt.xticks(rotation=20, fontsize=12)
 plt.tight_layout()
-#plt.savefig('imgs/example_img_v2.jpg')
+plt.savefig('imgs/example_img_v2.jpg')
 plt.show()
