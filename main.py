@@ -2,6 +2,8 @@
 import praw
 import json
 import matplotlib.pyplot as plt
+import operator
+
 
 # credentials
 with open('credentials.json', 'r') as f:
@@ -13,20 +15,25 @@ reddit = praw.Reddit(client_id=credentials['client_id'],
                      user_agent='TodayOnReddit')
 
 # collect reddit posts
-data = [submission.title for submission in reddit.subreddit('all').hot(limit=10000)]
+data = [submission.title for submission in reddit.subreddit('formula1').hot(limit=100)]
 
 # specify keywords
-keywords = ["Blizzard", "China", "Hong Kong", "Trump", "Riot Games", "Tencent", "Google", "Climate"]
+keywords = ["renault", "racing point", "mercedes", "williams", "ferrari", "red bull","toro rosso", "alfa romeo", "haas", "mclaren"]
 
 # count occurrences
 keyword_count = {}
 for keyword in keywords:
     keyword_count[keyword] = len([s for s in data if keyword.lower() in s.lower()])
 
+# sort keywords
+sortedkeywords = sorted(keyword_count.items(), key = operator.itemgetter(1), reverse = True)
+
+x_val = [x[0] for x in sortedkeywords]
+y_val = [x[1] for x in sortedkeywords]
+
 # plot figure and save
 plt.figure(figsize=(8, 6))
-plt.title('Number of occurrences in post titles of last 10000 All posts')
-plt.bar(keyword_count.keys(), keyword_count.values(), width = 0.8, color = ['blue'])
+plt.title('Number of occurrences in post titles of last 100 hot posts in Formula 1')
+plt.bar(x_val, y_val, width = 0.8, color = ['blue'])
 plt.tight_layout()
-plt.savefig('imgs/example_img.jpg')
 plt.show()
